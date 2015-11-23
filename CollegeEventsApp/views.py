@@ -29,7 +29,7 @@ def login_view(request):
                 password = request.POST['password']
                 """
                 This line ensures the user exists in DB. If we had performed a raw sql query here like:
-                User.objects.raw(SELECT * from USER where username = \"' + username + '"')
+                User.objects.raw(SELECT * from USER where username = \"' + username + '\"')
                 than SQL injection would have happened
                 """
                 user = User.objects.get(username=username)
