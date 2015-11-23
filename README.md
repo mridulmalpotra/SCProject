@@ -1,21 +1,31 @@
 # SCProject
-End semester project for Secure Coding<br>
-Download virtualenv and create a virtual environment.<br>
-Install all the requirements in the virtual environment.<br>
-Before running project. Create database in MYSQL.<br>
-Use following commands :<br>
-create database SC_Project_Database;<br>
-Change the MYSQL password in settings.py in SCProject/SCProject directory.<br>
-Commands to run project : <br>
-Go to SCProject root directory.<br>
-Run following commands : <br>
-python manage.py migrate (this commands create all the sql tables for you)<br>
-python manage.py runserver (this starts a local server)<br>
-go to browser and type the server ip and port no. (Example :  http://127.0.0.1:8000/)<br>
-App is running now.<br>
+## End semester project for Secure Coding<br>
+
+### Requirements
+* Install the python package installer `pip`.
+* Use `pip` installer to automatically install the dependencies in the virtualenv. Command: `pip install -r requirements.txt`
+(mysql_config can have some errors. Try installing with the system package manager if issues persist)
+* Now, install MySQL using the system package manager as well if not present. Configure usernames and passwords, to be used later.
+
+### Instructions to build the project
+
+* Download `virtualenv` and create a virtual environment. More details [here](http://docs.python-guide.org/en/latest/dev/virtualenvs/).<br>
+* Install all the requirements in the virtual environment.<br>
+* Before running project. Create database in MYSQL. MySQL prompt: `CREATE DATABASE SC_Project_Database;<br>`
+* Change the MySQL username and password in settings.py in the main directory as configured above.<br>
+* Go to SCProject root directory.<br>
+* Run following commands : <br>
+`python manage.py migrate` (this commands create all the sql tables for you)<br>
+`python manage.py runserver <optional domain name and IP address/ empty implies localhost>` (this starts a local server)<br>
+
+* Go to browser and type the server ip and port no. (Example :  http://127.0.0.1:8000/)<br>
+* App will be running now.<br>
 <br>
 <br>
-Since, the app will run in development mode the invalid url will throw exception.<br>
+* Since, the app will run in development mode the invalid url will throw exception.<br>
+
+### Allowed URLs
+
 All the allowed urls are as follows:<br>
 I will assume server IP is http://127.0.0.1:8000/<br>
 1) http://127.0.0.1:8000/ <br>
