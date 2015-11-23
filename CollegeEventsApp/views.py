@@ -65,9 +65,23 @@ def logout_view(request):
 @csrf_protect
 def dashboard(request):
 	if request.user.is_authenticated():
+		user = User.objects.get(username=request.user)
+		if user.is_superuser:
+			return render_to_response('admin_dashboard.html', context_instance=RequestContext(request))
 		return render_to_response('dashboard.html', context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/eventsApp/signin', {'msg' : "Please login to continue"})
+
+@login_required(login_url='/eventsApp/signin')
+@csrf_protect
+def user_view(request):
+	if request.user.is_authenticated():
+		user = User.objects.get(username=request.user)
+		if user.is_superuser:
+			user = UserProfile.objects.all()
+			return render_to_response('admin_all_users.html', {'data' : user}, context_instance=RequestContext(request))
+		else:
+			return HttpResponseRedirect('/eventsApp/dashboard');
 
 @login_required(login_url='/eventsApp/signin')
 @csrf_protect
@@ -120,7 +134,42 @@ def view_all_events(request):
 	if request.user.is_authenticated():
 		if request.method == 'GET':
 			event = Events.objects.all()
-			return render_to_response('view_all_events.html', {'data' : event}, context_instance=RequestContext(request))
+			user = User.objects.get(username=request.user)
+			if user.is_superuser:
+				return render_to_response('admin_all_events.html', {'data' : event}, context_instance=RequestContext(request))
+			else:
+				return render_to_response('view_all_events.html', {'data' : event}, context_instance=RequestContext(request))
+		if request.method == 'POST':
+			user = User.objects.get(username=request.user)
+			if user.is_superuser:
+				if request.POST.get('eventId', False):
+					eventid = request.POST['eventId']
+					delete = False
+					confirm = False
+					editFin = False
+					if request.POST.get('delete', False):
+						delete = True
+					if delete:
+						if request.POST.get('confirm', False):
+							event = Events.objects.get(eventid=eventid).delete()
+							event = Events.objects.all()
+							return render_to_response('admin_all_events.html', {'data' : event}, context_instance=RequestContext(request))
+						else:
+							event = Events.objects.get(eventid=eventid)
+							return render_to_response('confirmation.html', {'data' : event}, context_instance=RequestContext(request))
+					else:
+						if request.POST.get('editFin', False):
+							eventDescription = request.POST['eventDescription']
+							eventDate = request.POST['date']
+							eventTime = request.POST['time']
+							Events.objects.filter(eventid=eventid).update(eventDescription=eventDescription, eventDate=eventDate, eventTime=eventTime)
+							event = Events.objects.all()
+							return render_to_response('admin_all_events.html', {'data' : event}, context_instance=RequestContext(request))
+						else:
+							event  = Events.objects.get(eventid=eventid)
+							return render_to_response('edit_event.html', {'data' : event}, context_instance=RequestContext(request))
+			else:
+				return HttpResponseRedirect('/eventsApp/dashboard')
 	else:
 		return HttpResponseRedirect('/eventsApp/signin')
 
@@ -167,4 +216,67 @@ def view_my_events(request):
 						return render_to_response('edit_event.html', {'data' : event}, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/eventsApp/signin')
+
+def eventsAPI(request):
+	if request.method == 'GET':
+		events = Events.objects.all()
+		data = "["
+		for e in events:
+			print str(e)
+			data += str(e) + ","
+			print data
+		if data != '[':
+			data = data[:-1] + ']'
+		else:
+			data += ']'
+		print data
+		retVal = '{"status" : true, "events" : ' + data + ', "message" : null}'
+		return HttpResponse(retVal)
+	if request.method == 'POST':
+		return HttpResponse("Not Allowed.")
+
+def eventsUserAPI(request, username):
+	if request.method == 'GET':
+		try:
+			user = User.objects.get(username=username)
+			profile = UserProfile.objects.get(user=user.pk)
+			events = Events.objects.filter(userWhoPosted=profile.pk)
+			data = "["
+			for e in events:
+				print str(e)
+				data += str(e) + ","
+				print data
+			if data != '[':
+				data = data[:-1] + ']'
+			else:
+				data += ']'
+			print data
+			retVal = '{"status" : true, "events" : ' + data + ', "message" : null}'
+			return HttpResponse(retVal)
+		except:
+			return HttpResponse("No events found")
+	if request.method == 'POST':
+		return HttpResponse("Not Allowed.")
+
+def eventsUnsafeUserAPI(request, username):
+	if request.method == 'GET':
+		try:
+			events = Events.objects.raw('SELECT * FROM CollegeEventsApp_events where userWhoPosted_id=\"' + username + '\"')
+			data = "["
+			for e in events:
+				print str(e)
+				data += str(e) + ","
+				print data
+			if data != '[':
+				data = data[:-1] + ']'
+			else:
+				data += ']'
+			print data
+			retVal = '{"status" : true, "events" : ' + data + ', "message" : null}'
+			return HttpResponse(retVal)
+		except:
+			return HttpResponse("No events found")
+	if request.method == 'POST':
+		return HttpResponse("Not Allowed.")	
+
 

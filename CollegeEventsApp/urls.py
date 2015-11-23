@@ -11,5 +11,6 @@ urlpatterns = [
 	url(r'^dashboard/viewall/$', views.view_all_events, name='view_all_events'),
 	url(r'^dashboard/myevents/$', views.view_my_events, name='view_my_events'),
 	url(r'^dashboard/profile/$', views.profile, name='profile'),
-	url(r'^dashboard/logout/$', views.login_view, name='logout_view'),
+	url(r'^dashboard/logout/$', views.logout_view, name='logout_view'),
+	url(r'^dashboard/viewUsers/$', views.user_view, name='user_view'),
 ]
