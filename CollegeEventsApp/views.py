@@ -54,21 +54,21 @@ def signup_view(request):
         Assure that request contains all the required information
         """
         flag = True
-        if !request.POST.get('first_name', False):
+        if not request.POST.get('first_name', False):
             flag = False;
-        if !request.POST.get('last_name', False):
+        if not request.POST.get('last_name', False):
             flag = False;
-        if !request.POST.get('username', False):
+        if not request.POST.get('username', False):
             flag = False;
-        if !request.POST.get('email', False):
+        if not request.POST.get('email', False):
             flag = False;
-        if !request.POST.get('rollno', False):
+        if not request.POST.get('rollno', False):
             flag = False;
-        if !request.POST.get('batch', False):
+        if not request.POST.get('batch', False):
             flag = False;
-        if !request.POST.get('password', False):
+        if not request.POST.get('password', False):
             flag = False;
-        if !request.POST.get('password_confirmation', False):
+        if not request.POST.get('password_confirmation', False):
             flag = False;
         if flag:
             try:
@@ -171,13 +171,13 @@ def create_event(request):
             Assure that request contains all the required information
             """
             flag = True
-            if !request.POST.get('eventName', False):
+            if not request.POST.get('eventName', False):
                 flag = False
-            if !request.POST.get('eventDescription', False):
+            if not request.POST.get('eventDescription', False):
                 flag = False
-            if !request.POST.get('date', False):
+            if not request.POST.get('date', False):
                 flag = False
-            if !request.POST.get('time', False):
+            if not request.POST.get('time', False):
                 flag = False
             if flag:
                 try:
