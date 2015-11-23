@@ -18,17 +18,17 @@ App is running now.<br>
 Since, the app will run in development mode the invalid url will throw exception.<br>
 All the allowed urls are as follows:<br>
 I will assume server IP is http://127.0.0.1:8000/<br>
-1) http://127.0.0.1:8000/
-2) http://127.0.0.1:8000/eventsApp
-4) http://127.0.0.1:8000/eventsApp/signin
-5) http://127.0.0.1:8000/eventsApp/signup
-6) http://127.0.0.1:8000/eventsApp/dashboard
-7) http://127.0.0.1:8000/eventsApp/dashboard/create
-8) http://127.0.0.1:8000/eventsApp/dashboard/viewall (for both normal and admin user. admin user gets edit and delete option also)
-9) http://127.0.0.1:8000/eventsApp/dashboard/myevents
-10) http://127.0.0.1:8000/eventsApp/dashboard/profile
-11) http://127.0.0.1:8000/eventsApp/dashboard/logout
-12) http://127.0.0.1:8000/eventsApp/dashboard/viewUsers (only for admin user)
-13) http://127.0.0.1:8000/eventsAPI/events
-14) http://127.0.0.1:8000/eventsAPI/events/<username> (for API call roll no of student)
-15) http://127.0.0.1:8000/eventsUnsafeAPI/events/<rollno> (for API call roll no of student) (prone to sql injection) 
+1) http://127.0.0.1:8000/ <br>
+2) http://127.0.0.1:8000/eventsApp <br>
+3) http://127.0.0.1:8000/eventsApp/signin <br>
+4) http://127.0.0.1:8000/eventsApp/signup <br>
+5) http://127.0.0.1:8000/eventsApp/dashboard <br>
+6) http://127.0.0.1:8000/eventsApp/dashboard/create <br>
+7) http://127.0.0.1:8000/eventsApp/dashboard/viewall (for both normal and admin user. admin user gets edit and delete option also) <br>
+8) http://127.0.0.1:8000/eventsApp/dashboard/myevents <br>
+9) http://127.0.0.1:8000/eventsApp/dashboard/profile <br>
+10) http://127.0.0.1:8000/eventsApp/dashboard/logout <br>
+11) http://127.0.0.1:8000/eventsApp/dashboard/viewUsers (only for admin user) <br>
+12) http://127.0.0.1:8000/eventsAPI/events <br>
+13) http://127.0.0.1:8000/eventsAPI/events/<username> (for API call roll no of student) <br>
+14) http://127.0.0.1:8000/eventsUnsafeAPI/events/<rollno> (for API call roll no of student) (prone to sql injection) 
