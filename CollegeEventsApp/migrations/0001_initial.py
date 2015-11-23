@@ -18,14 +18,14 @@ class Migration(migrations.Migration):
                 ('eventid', models.AutoField(serialize=False, primary_key=True)),
                 ('eventName', models.CharField(max_length=50)),
                 ('eventDescription', models.CharField(max_length=200)),
-                ('eventDate', models.DateTimeField(verbose_name=b'Event Date/Time')),
+                ('eventDate', models.CharField(max_length=10)),
+                ('eventTime', models.CharField(max_length=10)),
             ],
         ),
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('roll_no', models.CharField(max_length=10)),
+                ('roll_no', models.CharField(max_length=10, serialize=False, primary_key=True)),
                 ('stream', models.CharField(default=b'CSE', max_length=3, choices=[(b'ECE', b'Electronics'), (b'CSE', b'Computer Science')])),
                 ('batch', models.CharField(max_length=4)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
