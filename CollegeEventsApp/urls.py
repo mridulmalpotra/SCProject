@@ -9,4 +9,7 @@ urlpatterns = [
 	url(r'^dashboard/$', views.dashboard, name='dashboard'),
 	url(r'^dashboard/create/$', views.create_event, name='create_event'),
 	url(r'^dashboard/viewall/$', views.view_all_events, name='view_all_events'),
+	url(r'^dashboard/myevents/$', views.view_my_events, name='view_my_events'),
+	url(r'^dashboard/profile/$', views.profile, name='profile'),
+	url(r'^dashboard/logout/$', views.login_view, name='logout_view'),
 ]

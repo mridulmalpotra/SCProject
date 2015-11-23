@@ -59,7 +59,7 @@ def signup_view(request):
 @csrf_protect
 def logout_view(request):
 	logout(request)
-	return HttpResponseRedirect('/eventsApp')
+	return HttpResponseRedirect('/eventsApp/')
 
 @login_required(login_url='/eventsApp/signin')
 @csrf_protect
@@ -68,6 +68,31 @@ def dashboard(request):
 		return render_to_response('dashboard.html', context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/eventsApp/signin', {'msg' : "Please login to continue"})
+
+@login_required(login_url='/eventsApp/signin')
+@csrf_protect
+def profile(request):
+	if request.user.is_authenticated():
+		if request.method == 'GET':
+			user = User.objects.get(username=request.user)
+			profile = UserProfile.objects.get(user=user.pk)
+			return render_to_response('profile.html', {'data' : profile}, context_instance=RequestContext(request))
+		if request.method == 'POST':
+			user = User.objects.get(username=request.user)
+			profile = UserProfile.objects.get(user=user.pk)
+			print request.POST.get('test', False)
+			if request.POST.get('test', False):
+				return render_to_response('change_password.html', {'data': profile}, context_instance=RequestContext(request))
+			password = request.POST['password']
+			password_confirmation = request.POST['password_confirmation']
+			if password != password_confirmation:
+				return render_to_response('signup.html', {'msg' : "Passwords doesn't match"}, context_instance=RequestContext(request))
+			else:
+				user.set_password(password)
+				user.save()
+				return HttpResponseRedirect('/eventsApp/dashboard')
+	else:
+		return HttpResponseRedirect('/eventsApp/signin')
 
 @login_required(login_url='eventsApp/signin')
 @csrf_protect
@@ -82,8 +107,6 @@ def create_event(request):
 			time = request.POST['time']
 			user = User.objects.get(username=request.user)
 			profile = UserProfile.objects.get(user=user.pk)
-			print profile.roll_no
-			print eventName, eventDescription, date, time, user
 			event = Events.objects.create(userWhoPosted=profile, eventName=eventName, eventDescription=eventDescription, eventDate=date, eventTime=time)
 			event.save()
 			profile.save()
@@ -100,3 +123,48 @@ def view_all_events(request):
 			return render_to_response('view_all_events.html', {'data' : event}, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/eventsApp/signin')
+
+@login_required(login_url='eventsApp/signin')
+@csrf_protect
+def view_my_events(request):
+	if request.user.is_authenticated():
+		if request.method == 'GET':
+			user = User.objects.get(username=request.user)
+			profile = UserProfile.objects.get(user=user.pk)
+			event = Events.objects.filter(userWhoPosted=profile.pk)
+			return render_to_response('my_event.html', {'data' : event}, context_instance=RequestContext(request))
+		if request.method == 'POST':
+			if request.POST.get('eventId', False):
+				eventid = request.POST['eventId']
+				delete = False
+				confirm = False
+				editFin = False
+				if request.POST.get('delete', False):
+					delete = True
+				if delete:
+					if request.POST.get('confirm', False):
+						event = Events.objects.get(eventid=eventid).delete()
+						user = User.objects.get(username=request.user)
+						profile = UserProfile.objects.get(user=user.pk)
+						event = Events.objects.filter(userWhoPosted=profile.pk)
+						return render_to_response('my_event.html', {'data' : event}, context_instance=RequestContext(request))
+					else:
+						event = Events.objects.get(eventid=eventid)
+						return render_to_response('confirmation.html', {'data' : event}, context_instance=RequestContext(request))
+				else:
+					if request.POST.get('editFin', False):
+						eventDescription = request.POST['eventDescription']
+						eventDate = request.POST['date']
+						eventTime = request.POST['time']
+						print eventDescription, eventDate, eventTime
+						Events.objects.filter(eventid=eventid).update(eventDescription=eventDescription, eventDate=eventDate, eventTime=eventTime)
+						user = User.objects.get(username=request.user)
+						profile = UserProfile.objects.get(user=user.pk)
+						event = Events.objects.filter(userWhoPosted=profile.pk)
+						return render_to_response('my_event.html', {'data' : event}, context_instance=RequestContext(request))
+					else:
+						event  = Events.objects.get(eventid=eventid)
+						return render_to_response('edit_event.html', {'data' : event}, context_instance=RequestContext(request))
+	else:
+		return HttpResponseRedirect('/eventsApp/signin')
+
