@@ -329,6 +329,30 @@ def create_user_API(request, first_name, last_name, username, email, rollno, bat
     except:
         return HttpResponse("Registration Failed")
 
+@csrf_protect
+def delete_event_API(request, eventid):
+    if request.user.is_authenticated():
+        try:
+            event = Events.objects.get(eventid=eventid).delete()
+            return HttpResponse("Deletion Done")
+        except:
+            return HttpResponse("Deletion Failed. Try valid eventid")
+    else:
+        return HttpResponse("Deletion Failed. You need to be logged in.")
+
+@csrf_protect
+def change_password_API(request, password):
+    if request.user.is_authenticated():
+        try:
+            password = str(password)
+            user = User.objects.get(username=request.user)
+            user.set_password(password)
+            user.save()
+            return HttpResponse("Change Successful")
+        except:
+            return HttpResponse("Change Failed.")
+    else:
+        return HttpResponse("Change failed. You need to be logged in.")
 
 def eventsAPI(request):
     if request.method == 'GET':

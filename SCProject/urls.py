@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^eventsAPI/registerUser/(?P<first_name>.+)/(?P<last_name>.+)/(?P<username>.+)/(?P<email>.+)/(?P<rollno>.+)/(?P<batch>.+)/(?P<password>.+)$', \
     	views.create_user_API, name='create_user_API'),
     url(r'^eventsAPI/events/(?P<username>.+)/$', views.eventsUserAPI, name='eventsUserAPI'),
+    url(r'^eventsAPI/delete/(?P<eventid>[0-9]+)/$', views.delete_event_API, name='delete_event_API'),
+    url(r'^eventsAPI/changePassword/(?P<password>.+)/$', views.change_password_API, name='change_password_API'),
     url(r'^eventsUnsafeAPI/events/(?P<username>.+)/$', views.eventsUnsafeUserAPI, \
     	name='eventsUnsafeUserAPI'),
 ]
