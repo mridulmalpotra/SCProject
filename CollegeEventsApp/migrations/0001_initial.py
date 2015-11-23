@@ -26,7 +26,8 @@ class Migration(migrations.Migration):
             name='UserProfile',
             fields=[
                 ('roll_no', models.CharField(max_length=10, serialize=False, primary_key=True)),
-                ('stream', models.CharField(default=b'CSE', max_length=3, choices=[(b'ECE', b'Electronics'), (b'CSE', b'Computer Science')])),
+                ('stream', models.CharField(default=b'CSE', max_length=3, choices=[(b'ECE', \
+                    b'Electronics'), (b'CSE', b'Computer Science')])),
                 ('batch', models.CharField(max_length=4)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],

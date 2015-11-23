@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'CollegeEventsApp',
+    'django_extensions'
 )
 
 MIDDLEWARE_CLASSES = (
