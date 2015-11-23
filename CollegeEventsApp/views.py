@@ -183,7 +183,7 @@ def create_event(request):
                 try:
                     """
                     These line ensures the correct update in DB. It handles validation at the backend. If we had performed a raw sql query.
-                than SQL injection would have happened
+                    than SQL injection would have happened
                     """
                     eventName = request.POST['eventName']
                     eventDescription = request.POST['eventDescription']
@@ -290,6 +290,45 @@ def view_my_events(request):
                         return render_to_response('edit_event.html', {'data' : event}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/eventsApp/signin')
+
+@csrf_protect
+def create_event_API(request, eventName, eventDescription, date, time):
+    if request.user.is_authenticated():
+        try:
+            eventName = str(eventName)
+            eventDescription = str(eventDescription)
+            date = str(date)
+            time = str(time)
+            user = User.objects.get(username=request.user)
+            profile = UserProfile.objects.get(user=user.pk)
+            event = Events.objects.create(userWhoPosted=profile, eventName=eventName, eventDescription=eventDescription, eventDate=date, eventTime=time)
+            event.save()
+            profile.save()
+            return HttpResponse("Event Creation Done")
+        except:
+            return HttpResponse("Event Creation Failed")
+    else:
+        return HttpResponse("Event Creation Failed. You need to be logged in.")
+
+@csrf_protect
+def create_user_API(request, first_name, last_name, username, email, rollno, batch, password):
+    try:
+        first_name = str(first_name)
+        last_name = str(last_name)
+        username = str(username)
+        email = str(email)
+        rollno = str(rollno)
+        batch = str(batch)
+        password = str(password)
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password)
+        user.save()
+        profile = UserProfile.objects.create(user=user, roll_no=rollno, batch=batch)
+        profile.save()
+        user.save()
+        return HttpResponse("Registration Done")
+    except:
+        return HttpResponse("Registration Failed")
+
 
 def eventsAPI(request):
     if request.method == 'GET':
