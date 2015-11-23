@@ -30,5 +30,5 @@ I will assume server IP is http://127.0.0.1:8000/<br>
 10) http://127.0.0.1:8000/eventsApp/dashboard/logout <br>
 11) http://127.0.0.1:8000/eventsApp/dashboard/viewUsers (only for admin user) <br>
 12) http://127.0.0.1:8000/eventsAPI/events <br>
-13) http://127.0.0.1:8000/eventsAPI/events/<username> (for API call roll no of student) <br>
-14) http://127.0.0.1:8000/eventsUnsafeAPI/events/<rollno> (for API call roll no of student) (prone to sql injection) 
+13) http://127.0.0.1:8000/eventsAPI/events/(username) (for API call roll no of student) <br>
+14) http://127.0.0.1:8000/eventsUnsafeAPI/events/(rollno) (for API call roll no of student) (prone to sql injection) 
